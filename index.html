@@ -1,13 +1,54 @@
 <!DOCTYPE html>
-<html>
-
-<script type="text/javascript" src="assets/javascript/game.js"></script>
-
+<html lang="en-us">
 <head>
-	<title></title>
+	<meta charset="utf-8">
+	
+	<link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<script type="text/javascript" src="assets/javascript/game.js"></script>
+
+	<title>Punk Hangman</title>
+    
 </head>
 <body>
+<div id="master-div">
+		<header id="header-jumbo" class=" text-center">
+			<h1 id="header-main">Hangman</h1>
+			<h2 id="header-sub">Gone Punk</h2>
+			
+		</header>
 
+<!-- TODO: Re-Indent -->
+
+<section id="game-section" class="text-center">
+<div>
+	<article class="col-md-2"></article>
+
+	<article id="game-container" class="col-md-8 text-center">
+		<div id="game-directions-div">
+			<h3 id="game-directions">Press Any Key To Start!</h3>
+		</div>
+		<div id="game-window">
+			<h3>Current Word</h3>
+			<h3 id="word-guess-display"></h3>
+			<h3>Number of Guesses Remaining</h3>
+			<h3 id="num-guesses-remaining">hi</h3>
+			<h3>Wrong Letters Guessed</h3>
+			<h3 id="wrong-letters">hi</h3>[]
+		</div>
+	</article>
+
+	<div id="wins-counter-div" class="col-md-2">
+		<h3 id="wins-display">Wins: 0</h3>
+	</div>
+</div>
+</section>
+
+
+</div>
 </body>
 
 </html>

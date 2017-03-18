@@ -1,4 +1,5 @@
 var gameOver = false;
+var gameStarted = false;
 
 var wordList = ["Hello", "Running", "Going To Win"];
 
@@ -6,7 +7,7 @@ var wordGuessAnswer = wordList[2].split("");
 
 var wordGuessDisplay = Array.from(wordGuessAnswer);
 
-var numGuessesRemaining = 10;
+var numGuessesRemaining = 12;
 
 var isCorrectGuess = false;
 
@@ -15,6 +16,8 @@ var correctGuessedLetters = [];
 var incorrectGuessedLetters = [];
 
 var key = null;
+
+var debugName = -1;
 
 for (var i = 0; i < wordGuessDisplay.length; i++) {
 	if (wordGuessDisplay[i] != " ") {
@@ -27,32 +30,41 @@ console.log(wordGuessAnswer);
 console.log(wordGuessDisplay);
 
 function checkForKey(key) {
-	console.log("checkGuessed: " + checkGuessed(key));
-	console.log("key: " + key);
-	if(!checkGuessed(key)){
-		for (var i = 0; i < wordGuessAnswer.length; i++) {
-			if (key === wordGuessAnswer[i].toUpperCase()) {
-				wordGuessDisplay[i] = wordGuessAnswer[i];
-				console.log("Correct! One letter is - " + key.toUpperCase());
-				isCorrectGuess = true;	
-			} 
-		}
-		
-		guessedLetters.push(key);
+	if(gameStarted){
+		console.log("checkGuessed: " + checkGuessed(key));
+		console.log("key: " + key);
+		if(!checkGuessed(key)){
+			for (var i = 0; i < wordGuessAnswer.length; i++) {
+				if (key === wordGuessAnswer[i].toUpperCase()) {
+					wordGuessDisplay[i] = wordGuessAnswer[i];
+					console.log("Correct! One letter is - " + key.toUpperCase());
+					isCorrectGuess = true;	
+				} 
+			}
+			
+			guessedLetters.push(key);
 
-		if(isCorrectGuess){
-			correctGuessedLetters.push(key);	
-			isCorrectGuess = false;
-		} else {
-			wrongGuess(key);
+			if(isCorrectGuess){
+				correctGuessedLetters.push(key);	
+				isCorrectGuess = false;
+			} else {
+				wrongGuess(key);
+			}
 		}
+	} else {
+		startGame()
 	}
+	debugLog();
 }
 
+
+// Handles if it the user's letter (key) guessed is wrong
 function wrongGuess(key) {
-	//TODO: Write code for wrongGuess function
+
 	numGuessesRemaining--;
 	incorrectGuessedLetters.push(key);
+	
+	// Determines gameOver
 	if(numGuessesRemaining === 0){
 		gameOver = true;
 	}
@@ -74,25 +86,33 @@ document.onkeyup = function(event){
 		console.log(key);
 		checkForKey(key);
 	}
-	debugLog();
 }
 
+function startGame() {
+	for (var i = 0; i < wordGuessDisplay.length; i++) {
+		if (wordGuessDisplay[i] != " ") {
+			wordGuessDisplay[i] = "_";
+		}
+	}	
+	gameStarted = true;
+}
 
 
 function debugLog() {
 
-	if(location != null){
-		console.log("\n\n\n\n");
-		console.log("FROM: " + debugLog.caller.name + "() -------");
-		console.log("wordGuessAnswer: " + wordGuessAnswer);
-		console.log("wordGuessDisplay: " + wordGuessDisplay);
-		console.log("--");
-		console.log("guessedLetters: " + guessedLetters);
-		console.log("correctGuessedLetters: " + correctGuessedLetters);
-		console.log("incorrectGuessedLetters: " + incorrectGuessedLetters);
-		console.log("--");
-		console.log("numGuessesRemaining: " + numGuessesRemaining);
-		console.log("----------------------");
-	}
+	debugName = debugLog.caller.name || onkeyup;
+	
+	console.log("\n");
+	console.log("FROM: " + debugName + "() -------");
+	console.log("wordGuessAnswer: " + wordGuessAnswer);
+	console.log("wordGuessDisplay: " + wordGuessDisplay);
+	// console.log("--");
+	// console.log("guessedLetters: " + guessedLetters);
+	// console.log("correctGuessedLetters: " + correctGuessedLetters);
+	// console.log("incorrectGuessedLetters: " + incorrectGuessedLetters);
+	// console.log("--");
+	console.log("numGuessesRemaining: " + numGuessesRemaining);
+	console.log("\n----------------------");
+	
 }
 
