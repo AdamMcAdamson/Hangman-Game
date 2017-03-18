@@ -8,47 +8,50 @@
 
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-	<script type="text/javascript" src="assets/javascript/game.js"></script>
 
 	<title>Punk Hangman</title>
     
 </head>
 <body>
 <div id="master-div">
-		<header id="header-jumbo" class=" text-center">
-			<h1 id="header-main">Hangman</h1>
-			<h2 id="header-sub">Gone Punk</h2>
-			
-		</header>
+	<header id="header-jumbo" class=" text-center">
+		<h1 id="header-main">Hangman</h1>
+		<h2 id="header-sub">Gone Punk</h2>
+	</header>
 
 <!-- TODO: Re-Indent -->
 
-<section id="game-section" class="text-center">
-<div>
-	<article class="col-md-2"></article>
+	<section id="game-section" class="text-center">
+		<div>
+			<article class="col-md-2"></article>
 
-	<article id="game-container" class="col-md-8 text-center">
-		<div id="game-directions-div">
-			<h3 id="game-directions">Press Any Key To Start!</h3>
+			<article id="game-container" class="col-md-8 text-center">
+				<div id="game-directions-div">
+					<h3 id="game-directions">Press Any Key To Start!</h3>
+				</div>
+				<div id="game-window">
+					<span id="win-span">
+						<h1 id="win-text">YOU WIN!</h1>
+						<img id="win-img" src="http://images4.fanpop.com/image/photos/14900000/Punk-s-not-dead-punk-rock-14926257-500-396.jpg" alt="PUNK IS NOT DEAD">
+					</span>
+					<h3 class="game-info">Current Word</h3>
+					<h3 id="word-guess-display" class="spacing"></h3>
+					<h3 class="game-info">Number of Guesses Remaining</h3>
+					<h3 id="num-guesses-remaining">hi</h3>
+					<h3 class="game-info">Wrong Letters Guessed</h3>
+					<h3 id="wrong-letters">hi</h3>
+				</div>
+			</article>
+
+			<div id="wins-counter-div" class="col-md-2">
+				<h3 id="wins-display">Wins: 0</h3>
+			</div>
 		</div>
-		<div id="game-window">
-			<h3>Current Word</h3>
-			<h3 id="word-guess-display"></h3>
-			<h3>Number of Guesses Remaining</h3>
-			<h3 id="num-guesses-remaining">hi</h3>
-			<h3>Wrong Letters Guessed</h3>
-			<h3 id="wrong-letters">hi</h3>[]
-		</div>
-	</article>
-
-	<div id="wins-counter-div" class="col-md-2">
-		<h3 id="wins-display">Wins: 0</h3>
-	</div>
-</div>
-</section>
+	</section>
 
 
 </div>
+	<script type="text/javascript" src="assets/javascript/game.js"></script>
 </body>
 
 </html>

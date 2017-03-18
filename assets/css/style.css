@@ -1,0 +1,8 @@
+#win-span {
+	position: absolute;
+	right: 30%;
+	top: 0;
+	width: 40%;
+	height: auto;
+	visibility: hidden;
+}
