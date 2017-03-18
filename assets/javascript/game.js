@@ -7,28 +7,35 @@ var wordIndex = -1;
 var wordGuessAnswer = "DEFAULT_NULL";
 var wordGuessDisplay = "DEFAULT_NULL";
 
-var wordDirections = "DEFAULT_NULL";
+var wordDirections = "Press Any Key To Start!";
 
-// TODO: Add Real, Themed, [Word, Hint] combinations
 var wordList = [
-["Hello", "Directions for Hello"], 
-["Running", "Directions for Running"], 
-["Going To Win", "Directions for Going To Win"]];
+["Green Day", "You should know them. Think grass"], 
+["Descendents", "Chant! Qwah qwaaaah qwaoh qwah. Pretty good, pretty good"], 
+["Ramones", "The 70s were all going 'Hey ho, let's go! hey ho, let's go!'"],
+["In Too Deep", "Every kid in the early 2000s sang this song by Math"],
+["Rancid", "Their music sounds like their name fits pretty offputting-ly. It sounds had a smell, that'd be it"],
+["The Offspring", "The cursed street this band referenced swallowed so many lives"],
+["Pretty Fly", "Give it too me Baby! AHH HUH AHH HUH! He definitely is for a white guy"],
+["Yellowcard", "Who knew you could get a foul for sleeping all day, staying up all night?"],
+["NOFX", "So.. Bob can't drink anymore you say? Well, why doesn't he just shave his head?"],
+["Reel Big Fish", "The band is a story of 'Give me all your money for my music' because you can't work in fast food all of your life"],
+["Against Me", "Known anarchists who were looking for revolution started a band and were edgy"],
+["Teenagers", "This song proves that Chemicals are nuts. They scare the living shit out of me!"],
+["Bowling For Soup", "Midlife Crisis central. U2 and Blondie. She is so uncool, acording to these guys"],
+["Niki Fm", "'Say Anything' plus the need to watch her breathe while she sleeps. Creepy, but it's the only station that plays song they know"],
+["Say Anything","He wrote the song about his grandparents having sex. In WWII. It's moving and about love"],
+["Ohio","The Height of this is the highest. She killed him well, alright. Where can you find his heart (it's known for lovers)?"],
+["Paramore", "Oh the misery of living on your own. It's fun, ain't it? So they say"],
+["Like Torches", "You'll never get this. They tell you how to swing and to look up so they can light the way. You've got Skeletons, btw"],
+["Emily", "You go from the best to the worst, all that you've been waiting is for her to laugh and smile? Must be no in the world like her"],
+["Hands Down", "I've got a confession to make. His hopes are so high she might kill him with her kiss. She meant it. This must be the best thing he can remember"],
+["Dance Gavin Dance", "Sex. If you could own your time, how would you spend it? These guys have some rollercoaster nights"],
+["Radio", "Shaking like a WHAT?!?! Poor puppy ate some crazy shit. Too bad Columbus was right, otherwise this Trio would drive off the edge. This song is nuts"],
+["Brand New", "To these guys just sex makes the glory fade. Especially if you breathe heavy into the mic. Die young and save yourself... from casual sex"]
+];
 
-
-
-// TODO: Remove Test Case, Uncomment startGame() real case
-function testCaseStart(){ 
-	wordIndex = 2;
-
-	wordGuessAnswer = wordList[wordIndex][0].split("");
-
-	wordGuessDisplay = Array.from(wordGuessAnswer);
-
-	wordDirections = wordList[wordIndex][1];
-}
-// STOP REMOVE
-
+var usedWordList = [];
 
 var numWins = 0;
 var numGuessesRemaining = 12;
@@ -43,7 +50,7 @@ var incorrectGuessedLetters = [];
 
 
 var haveTagVariables = false;
-var directionsTag, guessTag, guessesRemainingTag, wrongLettersTag, winsTag, winSpanTag;
+var directionsTag, guessTag, guessesRemainingTag, wrongLettersTag, winsTag, gameContainer, gameWindowTag, winSpanTag, loseSpanTag, winWordTag;
 
 
 for (var i = 0; i < wordGuessDisplay.length; i++) {
@@ -53,6 +60,26 @@ for (var i = 0; i < wordGuessDisplay.length; i++) {
 }
 
 debugLog("[BASE DEBUG]", "all");
+
+document.onkeyup = function(event){
+	console.log(event.keyCode)
+	if(event.keyCode > 64 && event.keyCode < 91) {
+		key = String.fromCharCode(event.keyCode).toUpperCase();
+		if(winCondition === true){
+			if(key === "C"){
+				startGame();
+			}
+		} else if(gameOver === true){
+			if(key === "R"){
+				startGame();
+			}
+		} else{
+			checkForKey(key);
+		}
+	}
+}
+
+
 
 function checkForKey(key) {
 	if(gameStarted && !gameOver && !winCondition){
@@ -78,32 +105,119 @@ function checkForKey(key) {
 		}
 	} else {
 		startGame()
-		gameOver = false;
 	} 
 	checkOver();
-	
 	updateDisplay();
-	console.log("gameStarted: " + gameStarted);
-	console.log("winCondition: " + winCondition);
-	console.log("gameOver: " + gameOver);
 }
+
+function startGame() {
+
+
+	// Defining variables for HTML Tags used for displaying game properties.
+	if(!haveTagVariables){
+		directionsTag = document.getElementById("game-directions");
+		guessTag = document.getElementById("word-guess-display");
+		guessesRemainingTag = document.getElementById("num-guesses-remaining");
+		wrongLettersTag = document.getElementById("wrong-letters");
+		winsTag = document.getElementById("wins-display");
+		gameContainer = document.getElementById("game-container");
+		gameWindowTag = document.getElementById("game-window");
+		winSpanTag = document.getElementById("win-span");
+		winWordTag = document.getElementById("win-word");
+		loseSpanTag = document.getElementById("lose-span");
+		haveTagVariables = true;
+	}
+
+	wordDirections = "Press Any Key To Start!";
+
+	if(gameOver === true){
+		numWins = 0;
+		gameOver = false;
+	} else if(winCondition === true){
+		winCondition = false;
+	} else {
+		if(wordList.length === 0){
+			wordList = usedWordList.splice(0, usedWordList.length);
+		}
+		wordIndex = Math.floor(Math.random() * wordList.length);
+		wordGuessAnswer = wordList[wordIndex][0].split("");
+		wordGuessDisplay = Array.from(wordGuessAnswer);
+		wordDirections = wordList[wordIndex][1];
+
+		usedWordList.push(wordList.splice(wordIndex, 1));
+
+		for (var i = 0; i < wordGuessDisplay.length; i++) {
+			if (wordGuessDisplay[i] != " ") {
+				wordGuessDisplay[i] = "_";
+			}
+		}
+	
+		gameStarted = true;
+	
+	}
+	numGuessesRemaining = 12;
+	guessedLetters = [];
+	correctGuessedLetters = [];
+	incorrectGuessedLetters = [];	
+
+	updateDisplay();
+
+}
+
+
+
 
 function checkOver() {
 	debugLog("CHECK OVER: ", "word");
 	if(numGuessesRemaining === 0){
 		gameOver = true;
+		gameStarted = false;
+		return "gameover";
 	}
 	for(var i = 0; i < wordGuessAnswer.length; i++){
 		if(wordGuessAnswer[i] !== wordGuessDisplay[i]){
-			console.log("WINDCODITION FALSE")
-			return false;
+			console.log("WINCONDITION FALSE")
+			return "nowin";
 		}
 	}
-	console.log("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
 	numWins++;
 	winCondition = true;
+	gameStarted = false;
+	return "win";
+}
 
-	debugLog("CHECK OVER -------END--------", "none");
+
+
+
+function updateDisplay(){
+	if(haveTagVariables){
+		if(winCondition === true){
+			gameContainer.style.visibility = "hidden";
+			winSpanTag.style.visibility = "visible";
+		}else if(gameOver === true){
+			gameContainer.style.visibility = "hidden";
+			loseSpanTag.style.visibility = "visible";
+		}else if(gameStarted === false){
+			gameWindowTag.style.visibility = "hidden";
+			gameContainer.style.visibility = "visible";
+			winSpanTag.style.visibility = "hidden";
+			loseSpanTag.style.visibility = "hidden";
+		} else{
+			gameWindowTag.style.visibility = "visible";
+			gameContainer.style.visibility = "visible";
+			winSpanTag.style.visibility = "hidden";
+			loseSpanTag.style.visibility = "hidden";
+		}
+		directionsTag.innerHTML = wordDirections;
+		guessTag.innerHTML = wordGuessDisplay.join("");
+		guessesRemainingTag.innerHTML = numGuessesRemaining;
+		wrongLettersTag.innerHTML = incorrectGuessedLetters.join(", ");
+		winsTag.innerHTML = "Wins: " + numWins;
+		winWordTag.innerHTML = "You got it! The word was " + wordGuessAnswer.join("") + "!";
+		console.log(wordDirections);
+	} else {
+		debugLog("[ERROR] Display Failed: {{updateDisplay() Called Early [From: " + updateDisplay.caller.name + "]}}  \n////// 'haveTagVariables(boolean)' - " + haveTagVariables, "all");
+	}
 }
 
 // Handles if it the user's letter (key) guessed is wrong
@@ -111,8 +225,6 @@ function wrongGuess(key) {
 
 	numGuessesRemaining--;
 	incorrectGuessedLetters.push(key);
-	
-	// Determines gameOver
 
 }
 
@@ -122,66 +234,6 @@ function checkGuessed(key) {
 		return true;
 	}
 	return false;
-}
-
-
-document.onkeyup = function(event){
-	console.log(event.keyCode)
-	if(event.keyCode > 64 && event.keyCode < 91) {
-		key = String.fromCharCode(event.keyCode).toUpperCase();
-		console.log(key);
-		checkForKey(key);
-	}
-	if(winCondition === true){
-		
-	}
-}
-
-function startGame() {
-
-	// Defining variables for HTML Tags used for displaying game properties.
-	if(!haveTagVariables){
-		directionsTag = document.getElementById("game-directions");
-		guessTag = document.getElementById("word-guess-display");
-		guessesRemainingTag = document.getElementById("num-guesses-remaining");
-		wrongLettersTag = document.getElementById("wrong-letters");
-		winsTag = document.getElementById("wins-display");
-		winSpanTag = document.getElementById("win-span");
-		haveTagVariables = true;
-	}
-
-// TODO: Remove testCaseStart() and Uncomment below.
-	testCaseStart();
-
-// TODO: Uncomment when ready
-	// wordIndex = Math.floor(Math.random() * wordList.length);
-	// wordGuessAnswer = wordList[wordIndex][0].split("");
-	// wordGuessDisplay = Array.from(wordGuessAnswer);
-	// wordDirections = wordList[wordIndex][1];
-
-	for (var i = 0; i < wordGuessDisplay.length; i++) {
-		if (wordGuessDisplay[i] != " ") {
-			wordGuessDisplay[i] = "_";
-		}
-	}
-	gameStarted = true;
-
-}
-
-
-function updateDisplay(){
-	if(winCondition === true){
-		winSpanTag.style.visibility = "visible";
-	}
-	if(haveTagVariables){
-		directionsTag.innerHTML = wordDirections;
-		guessTag.innerHTML = wordGuessDisplay.join("");
-		guessesRemainingTag.innerHTML = numGuessesRemaining;
-		wrongLettersTag.innerHTML = incorrectGuessedLetters.join(", ");
-		winsTag.innerHTML = "Wins: " + numWins;
-	} else {
-		debugLog("[ERROR] Display Failed: {{updateDisplay() Called Early [From: " + updateDisplay.caller.name + "]}}  \n////// 'haveTagVariables(boolean)' - " + haveTagVariables, "all");
-	}
 }
 
 function debugLog(custom, logType) {
